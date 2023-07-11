@@ -1,6 +1,15 @@
 import React, { KeyboardEvent } from 'react'
 import { useMutation } from '@apollo/client'
-import { ADD_TASK } from '../graphql/task/mutation'
+import { gql } from '@apollo/client'
+
+const ADD_TASK = gql`
+  mutation AddTask($task: taskInput!) {
+    taskCreate(task: $task) {
+      id
+      name
+    }
+  }
+`
 
 export default function Form() {
   const [taskCreate] = useMutation(ADD_TASK)

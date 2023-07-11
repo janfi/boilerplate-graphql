@@ -1,11 +1,42 @@
 import { useQuery, useSubscription } from '@apollo/client'
 import React from 'react'
-import {
-  TASK_ADDED,
-  TASK_UPDATED,
-  TASK_DELETED
-} from '../graphql/task/subscription'
-import { GET_TASKS_COUNT } from '../graphql/task/query'
+import { gql } from '@apollo/client'
+
+export const GET_TASKS_COUNT = gql`
+  query GetTasksCount($where: SequelizeJSON) {
+    taskCount(where: $where)
+  }
+`
+
+const TASK_ADDED = gql`
+  subscription OnTaskAdded {
+    taskCreated {
+      id
+      name
+      active
+    }
+  }
+`
+
+const TASK_UPDATED = gql`
+  subscription OnTaskAdded {
+    taskUpdated {
+      id
+      name
+      active
+    }
+  }
+`
+
+const TASK_DELETED = gql`
+  subscription OnTaskDeleted {
+    taskDeleted {
+      id
+      name
+      active
+    }
+  }
+`
 
 export default function Foot({
   select,

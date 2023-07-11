@@ -1,10 +1,27 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useDebouncedCallback } from 'use-debounce'
+import { gql } from '@apollo/client'
 
 import { Task } from '../shared/custom-types'
 import { TOMOROW_DATE } from '../shared/common-dates'
-import { DELETE_TASK, UPDATE_TASK } from '../graphql/task/mutation'
+
+const UPDATE_TASK = gql`
+  mutation UpdateTask($task: taskInput!) {
+    taskUpdate(task: $task) {
+      id
+      name
+      active
+      memoDate
+      memoSent
+    }
+  }
+`
+const DELETE_TASK = gql`
+  mutation DeleteTask($id: Int!) {
+    taskDelete(id: $id)
+  }
+`
 
 export default function TaskElement({
   task,
