@@ -23,7 +23,15 @@ export const todosMiddleware = (store: any) => {
   debug('Todos middleware')
 
   return (next: any) => (action: any) => {
-    console.log('Todos middleware', action)
+    if (
+      action.type === '@@apollo/QUERY_RESULT' &&
+      action.payload &&
+      action.payload.operationName === 'GetTasks' &&
+      action.payload.result.data
+    ) {
+      console.log('Todos middleware Get Tasks', action.payload.result.data.task)
+    }
+
     return next(action)
   }
 }

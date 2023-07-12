@@ -41,7 +41,6 @@ const createErrorLink = (store: any) => {
  */
 const createLoggerLink = (store: any) => {
   return new ApolloLink((operation, forward) => {
-    console.log(operation)
     const results = forward(operation)
     // This tracks the operation of subscribing to a GraphQL subscription.
     if ((operation.query.definitions[0] as any).operation === 'subscription') {
