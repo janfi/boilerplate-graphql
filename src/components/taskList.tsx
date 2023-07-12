@@ -65,7 +65,7 @@ export function TaskList({ status }: { status: string }) {
   })
 
   useEffect(() => {
-    refetch()
+    if (refetch) refetch()
   }, [refetch, status])
 
   useSubscription(TASK_ADDED, {

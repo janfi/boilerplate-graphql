@@ -1,6 +1,8 @@
 import { useQuery, useSubscription } from '@apollo/client'
 import React from 'react'
 import { gql } from '@apollo/client'
+import { useSelector } from 'react-redux'
+import { currentListTodos, currentTodosCount } from './actions'
 
 export const GET_TASKS_COUNT = gql`
   query GetTasksCount($where: SequelizeJSON) {
@@ -45,33 +47,7 @@ export default function Foot({
   select: (status: string) => void
   currentStatus: string
 }) {
-  const { loading, data, refetch } = useQuery(GET_TASKS_COUNT, {
-    variables: {
-      where: {
-        active: true
-      }
-    }
-  })
-
-  useSubscription(TASK_ADDED, {
-    onSubscriptionData: () => {
-      refetch()
-    }
-  })
-
-  useSubscription(TASK_UPDATED, {
-    onSubscriptionData: () => {
-      refetch()
-    }
-  })
-
-  useSubscription(TASK_DELETED, {
-    onSubscriptionData: () => {
-      refetch()
-    }
-  })
-
-  if (loading) return <p>Loading ...</p>
+  const todosCount = useSelector(currentTodosCount(true))
 
   return (
     <div id="todoMenu2" className="todo-menu-2">
@@ -80,7 +56,7 @@ export default function Foot({
         className="todos-left"
         aria-label="Number of to do tasks left to complete"
       >
-        Todos left: {data.taskCount}
+        Todos left: {todosCount}
       </label>
       <div id="todoMenu2Buttons" className="todo-menu-2-buttons">
         <button
