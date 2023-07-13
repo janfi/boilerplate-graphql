@@ -1,12 +1,16 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
-import todos, { todosMiddleware } from '../components/actions'
+import todos from './task/task.reducer'
+import thunk from 'redux-thunk'
+import { todosMiddleware } from './task/task.middleware'
+
+const rootReducer = combineReducers({ todos })
 
 const store = createStore(
-  combineReducers({
-    todos
-  }),
+  rootReducer,
   {}, // default state
-  applyMiddleware(todosMiddleware)
+  applyMiddleware(thunk, todosMiddleware)
 )
+
+export type RootState = ReturnType<typeof rootReducer>
 
 export default store

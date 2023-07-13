@@ -107,21 +107,21 @@ const createClient = (store: any) => {
         if (result && result.id && result.__typename) {
           // The activities are an union between organization events and project events.
           // So we add the type of the event to the id to create unique ids in Apollo cache.
-          if (result.__typename === 'activity') {
-            return result.__typename + result.type + result.id
-          }
-          if (result.__typename === 'backer') {
-            return (
-              result.__typename +
-              result.type +
-              result.id +
-              '_p' +
-              result.projectId
-            )
-          }
-          if (result.__typename === 'feed') {
-            return result.__typename + result.type + result.id
-          }
+          // if (result.__typename === 'Query') {
+          //   return result.__typename + result.type + result.id
+          // }
+          // if (result.__typename === 'backer') {
+          //   return (
+          //     result.__typename +
+          //     result.type +
+          //     result.id +
+          //     '_p' +
+          //     result.projectId
+          //   )
+          // }
+          // if (result.__typename === 'feed') {
+          //   return result.__typename + result.type + result.id
+          // }
           return result.__typename + result.id
         }
 
@@ -135,8 +135,8 @@ const createClient = (store: any) => {
 
 let clientInstance: any
 
-export const getClient = (store: any) => {
-  if (!clientInstance) {
+export const getClient = (store?: any) => {
+  if (!clientInstance && store) {
     clientInstance = createClient(store)
   }
   return clientInstance

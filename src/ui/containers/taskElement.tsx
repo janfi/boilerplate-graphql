@@ -3,87 +3,58 @@ import { useMutation } from '@apollo/client'
 import { useDebouncedCallback } from 'use-debounce'
 import { gql } from '@apollo/client'
 
-import { Task } from '../shared/custom-types'
-import { TOMOROW_DATE } from '../shared/common-dates'
+import { Task } from '../../shared/custom-types'
+import { TOMOROW_DATE, getStringDate } from '../../shared/common-dates'
+import { useDispatch } from 'react-redux'
+import { updateTask } from '../../services/task/update-task'
+import { deleteTask } from '../../services/task/delete-task'
 
-const UPDATE_TASK = gql`
-  mutation UpdateTask($task: taskInput!) {
-    taskUpdate(task: $task) {
-      id
-      name
-      active
-      memoDate
-      memoSent
-    }
-  }
-`
-const DELETE_TASK = gql`
-  mutation DeleteTask($id: Int!) {
-    taskDelete(id: $id)
-  }
-`
-
-export default function TaskElement({
-  task,
-  reloadList
-}: {
-  task: Task
-  reloadList: () => void
-}) {
+export default function TaskElement({ task }: { task: Task }) {
   const [reminder, setRemind] = useState(false)
 
   const { id, name, active, memoDate, memoSent } = task
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setRemind(task.memoDate !== null)
   }, [task])
 
-  const [taskUpdate] = useMutation(UPDATE_TASK)
+  const taskUpdate = (task: {
+    id: number
+    name?: string
+    active?: boolean
+    memoDate?: string | null
+    memoSent?: boolean
+  }) => {
+    dispatch(updateTask(task))
+  }
 
-  const [taskDelete] = useMutation(DELETE_TASK)
+  const taskDelete = (id: number) => {
+    dispatch(deleteTask(id))
+  }
 
   async function handleCheck(e: ChangeEvent<HTMLInputElement>) {
-    await taskUpdate({
-      variables: {
-        task: { id: id, active: !e.currentTarget.checked }
-      }
-    })
-    reloadList()
+    await taskUpdate({ id: id, active: !e.currentTarget.checked })
   }
 
   function handleDelete(e: MouseEvent<HTMLButtonElement>) {
-    taskDelete({
-      variables: {
-        id: id
-      }
-    })
+    taskDelete(id)
   }
 
   async function handleMemo(value?: any) {
-    if (value < TOMOROW_DATE) {
-      //hack => value can be smaller than now() with input ?!
-      await taskUpdate({
-        variables: {
-          task: {
-            id,
-            memoDate: value === '' ? null : TOMOROW_DATE,
-            memoSent: false
-          }
-        }
-      })
-    } else {
-      await taskUpdate({
-        variables: {
-          task: {
-            id,
-            memoDate: value === '' ? null : new Date(value),
-            memoSent: false
-          }
-        }
-      })
-    }
+    let memoDate =
+      value === ''
+        ? null
+        : value < TOMOROW_DATE
+        ? TOMOROW_DATE
+        : getStringDate(value)
 
-    reloadList()
+    await taskUpdate({
+      id,
+      memoDate,
+      memoSent: false
+    })
   }
 
   function addReminder(value?: any) {
@@ -92,11 +63,7 @@ export default function TaskElement({
 
   const { callback: debouncedHandleUpdate }: any = useDebouncedCallback(
     (value: any) => {
-      taskUpdate({
-        variables: {
-          task: { id: id, name: value }
-        }
-      })
+      taskUpdate({ id: id, name: value })
     },
     1000
   )

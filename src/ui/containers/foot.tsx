@@ -1,53 +1,22 @@
-import { useQuery, useSubscription } from '@apollo/client'
 import React from 'react'
-import { gql } from '@apollo/client'
 import { useSelector } from 'react-redux'
-import { currentListTodos, currentTodosCount } from './actions'
 
-export const GET_TASKS_COUNT = gql`
-  query GetTasksCount($where: SequelizeJSON) {
-    taskCount(where: $where)
-  }
-`
+import { useDispatch } from 'react-redux'
+import { changeStatus } from '../../services/task/change-status'
+import {
+  currentTodosCount,
+  currentTodosStatus
+} from '../../store/task/task.selectors'
 
-const TASK_ADDED = gql`
-  subscription OnTaskAdded {
-    taskCreated {
-      id
-      name
-      active
-    }
-  }
-`
-
-const TASK_UPDATED = gql`
-  subscription OnTaskAdded {
-    taskUpdated {
-      id
-      name
-      active
-    }
-  }
-`
-
-const TASK_DELETED = gql`
-  subscription OnTaskDeleted {
-    taskDeleted {
-      id
-      name
-      active
-    }
-  }
-`
-
-export default function Foot({
-  select,
-  currentStatus
-}: {
-  select: (status: string) => void
-  currentStatus: string
-}) {
+export default function Foot() {
   const todosCount = useSelector(currentTodosCount(true))
+  const todosStatus = useSelector(currentTodosStatus)
+
+  const dispatch = useDispatch()
+
+  const select = (status: string) => {
+    dispatch(changeStatus(status))
+  }
 
   return (
     <div id="todoMenu2" className="todo-menu-2">
@@ -61,7 +30,7 @@ export default function Foot({
       <div id="todoMenu2Buttons" className="todo-menu-2-buttons">
         <button
           id="showAllTodos"
-          className={`menu-2-button ${currentStatus === 'all' && 'active'}`}
+          className={`menu-2-button ${todosStatus === 'all' && 'active'}`}
           aria-label="Show all to do tasks"
           onClick={() => select('all')}
         >
@@ -69,7 +38,7 @@ export default function Foot({
         </button>
         <button
           id="showUncompletedTodos"
-          className={`menu-2-button ${currentStatus === 'active' && 'active'}`}
+          className={`menu-2-button ${todosStatus === 'active' && 'active'}`}
           aria-label="Show active to do tasks"
           onClick={() => select('active')}
         >
@@ -77,8 +46,7 @@ export default function Foot({
         </button>
         <button
           id="showCompletedTodos"
-          className={`menu-2-button ${currentStatus === 'completed' &&
-            'active'}`}
+          className={`menu-2-button ${todosStatus === 'completed' && 'active'}`}
           aria-label="Show completed to do tasks"
           onClick={() => select('completed')}
         >
