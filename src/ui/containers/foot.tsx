@@ -9,7 +9,7 @@ import {
 } from '../../store/task/task.selectors'
 
 export default function Foot() {
-  const todosCount = useSelector(currentTodosCount(true))
+  const todosCount = useSelector(currentTodosCount)
   const todosStatus = useSelector(currentTodosStatus)
 
   const dispatch = useDispatch()
