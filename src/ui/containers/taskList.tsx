@@ -23,7 +23,7 @@ export function TaskList() {
     dispatch(getTasks())
   }, [])
 
-  if (!init || loading) return <p>Loading ...</p>
+  if (!init && loading) return <p>Loading ...</p>
 
   // if (error) return <p>An error occured while loading the tasks !</p>
 

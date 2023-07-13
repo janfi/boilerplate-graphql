@@ -1,7 +1,6 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useDebouncedCallback } from 'use-debounce'
-import { gql } from '@apollo/client'
 
 import { Task } from '../../shared/custom-types'
 import { TOMOROW_DATE, getStringDate } from '../../shared/common-dates'
