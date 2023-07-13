@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery, useSubscription } from '@apollo/client'
 
 import TaskElement from './taskElement'
 import { Task } from '../../shared/custom-types'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { currentTodosStatus } from '../../store/task/task.selectors'
+import { isActiveStatus } from '../../store/task/task.selectors'
 import { GET_TASKS } from '../../graphql/task/query'
 import { setCount } from '../../store/task/task.reducer'
 
 export function TaskList() {
-  const todosStatus = useSelector(currentTodosStatus)
+  const [todos, setTodos] = useState([])
+
+  const isActive = useSelector(isActiveStatus)
 
   const dispatch = useDispatch()
 
@@ -26,8 +28,14 @@ export function TaskList() {
             (data && data.task.filter((todo: any) => !!todo.active).length) ?? 0
         })
       )
+      setTodos((data && data.task) ?? [])
     }
   })
+
+  console.log('todos', todos)
+  const currentTodos = todos.filter((todo: any) =>
+    isActive !== undefined ? todo.active === isActive : true
+  )
 
   // useEffect(() => {
   //   dispatch(
@@ -44,7 +52,7 @@ export function TaskList() {
 
   return (
     <ul id="todos" className="todos" aria-label="List of to do tasks">
-      {data.task.map((task: Task) => (
+      {currentTodos.map((task: Task) => (
         <TaskElement task={task} key={task.id} reloadList={refetch} />
       ))}
     </ul>
