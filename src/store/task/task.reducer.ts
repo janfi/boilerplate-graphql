@@ -26,7 +26,7 @@ export default (state = initialState, action: any) => {
   console.log('Todos reducers', action)
   switch (action.type) {
     case '@@todo/SET_COUNT':
-      return { ...state, loading: action.payload.count }
+      return { ...state, countActive: action.payload.count }
     case '@@todo/SET_STATUS':
       return { ...state, status: action.payload.status }
     default:
