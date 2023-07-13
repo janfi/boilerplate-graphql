@@ -8,6 +8,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { isActiveStatus } from '../../store/task/task.selectors'
 import { GET_TASKS } from '../../graphql/task/query'
 import { setCount } from '../../store/task/task.reducer'
+import {
+  TASK_ADDED,
+  TASK_DELETED,
+  TASK_UPDATED
+} from '../../graphql/task/subscription'
 
 export function TaskList() {
   const [todos, setTodos] = useState([])
@@ -19,32 +24,40 @@ export function TaskList() {
   const { loading, error, data, refetch } = useQuery(GET_TASKS, {
     variables: {
       order: 'reverse:createdAt'
-    },
-    onCompleted: (data: any) => {
-      //console.log(data.task.filter((todo: any) => !!todo.active).length)
-      dispatch(
-        setCount({
-          count:
-            (data && data.task.filter((todo: any) => !!todo.active).length) ?? 0
-        })
-      )
-      setTodos((data && data.task) ?? [])
     }
   })
 
-  console.log('todos', todos)
   const currentTodos = todos.filter((todo: any) =>
     isActive !== undefined ? todo.active === isActive : true
   )
 
-  // useEffect(() => {
-  //   dispatch(
-  //     setCount({
-  //       count:
-  //         (data && data.task.filter((todo: any) => !!todo.active).length) ?? 0
-  //     })
-  //   )
-  // }, [data])
+  useSubscription(TASK_UPDATED, {
+    onSubscriptionData: () => {
+      refetch()
+    }
+  })
+
+  useSubscription(TASK_ADDED, {
+    onSubscriptionData: () => {
+      refetch()
+    }
+  })
+
+  useSubscription(TASK_DELETED, {
+    onSubscriptionData: () => {
+      refetch()
+    }
+  })
+
+  useEffect(() => {
+    dispatch(
+      setCount({
+        count:
+          (data && data.task.filter((todo: any) => !!todo.active).length) ?? 0
+      })
+    )
+    setTodos((data && data.task) ?? [])
+  }, [data])
 
   if (!data && loading) return <p>Loading ...</p>
 
@@ -53,7 +66,7 @@ export function TaskList() {
   return (
     <ul id="todos" className="todos" aria-label="List of to do tasks">
       {currentTodos.map((task: Task) => (
-        <TaskElement task={task} key={task.id} reloadList={refetch} />
+        <TaskElement task={task} key={task.id} />
       ))}
     </ul>
   )

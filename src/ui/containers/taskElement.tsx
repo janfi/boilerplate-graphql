@@ -22,13 +22,7 @@ const DELETE_TASK = gql`
   }
 `
 
-export default function TaskElement({
-  task,
-  reloadList
-}: {
-  task: Task
-  reloadList: () => void
-}) {
+export default function TaskElement({ task }: { task: Task }) {
   const [reminder, setRemind] = useState(false)
 
   const { id, name, active, memoDate, memoSent } = task
@@ -47,7 +41,7 @@ export default function TaskElement({
         task: { id: id, active: !e.currentTarget.checked }
       }
     })
-    reloadList()
+    //reloadList()
   }
 
   function handleDelete(e: MouseEvent<HTMLButtonElement>) {
@@ -82,7 +76,7 @@ export default function TaskElement({
       })
     }
 
-    reloadList()
+    //reloadList()
   }
 
   function addReminder(value?: any) {
