@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useQuery, useSubscription } from '@apollo/client'
 
 import TaskElement from './taskElement'
-import { Task } from '../../shared/custom-types'
+import { Task } from '../../models/task.model'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getTasks } from '../../services/task/get-tasks'

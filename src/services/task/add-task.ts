@@ -1,6 +1,7 @@
 import { getClient } from '../../graphql/client'
 import { ADD_TASK } from '../../graphql/task/mutation'
 import { addTodo } from '../../store/task/task.reducer'
+import { getTasks } from './get-tasks'
 
 export const addTask = (task: { name: string; active: boolean }): any => async (
   dispatch: any,
@@ -14,5 +15,7 @@ export const addTask = (task: { name: string; active: boolean }): any => async (
     fetchPolicy: 'no-cache'
   })
 
-  dispatch(addTodo({ todo: task }))
+  //dispatch(addTodo({ todo: task })) ne marche pas car pas d'id
+
+  dispatch(getTasks())
 }

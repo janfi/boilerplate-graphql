@@ -2,8 +2,11 @@ import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useDebouncedCallback } from 'use-debounce'
 
-import { Task } from '../../shared/custom-types'
-import { TOMOROW_DATE, getStringDate } from '../../shared/common-dates'
+import { Task } from '../../models/task.model'
+import {
+  TOMOROW_DATE,
+  getStringDate
+} from '../../shared/tools/date/common-dates'
 import { useDispatch } from 'react-redux'
 import { updateTask } from '../../services/task/update-task'
 import { deleteTask } from '../../services/task/delete-task'

@@ -54,13 +54,15 @@ export default (state = initialState, action: any) => {
         init: true,
         loading: false
       }
-    case '@@todo/ADD_TODO':
+    case '@@todo/ADD_TODO': {
+      const list = [action.payload.todo]
       return {
         ...state,
-        list: [...state.list, ...action.payload.todo],
+        list: [...list, ...state.list],
         init: true,
         loading: false
       }
+    }
     case '@@todo/UPDATE_TODO': {
       let list: any[] = [...state.list]
       const updatedTodo = action.payload.todo
@@ -75,7 +77,7 @@ export default (state = initialState, action: any) => {
     }
     case '@@todo/DELETE_TODO':
       let list: any[] = [...state.list]
-      list = list.filter((todo: any) => todo.id === action.payload.id)
+      list = list.filter((todo: any) => todo.id !== action.payload.id)
       return {
         ...state,
         list,
