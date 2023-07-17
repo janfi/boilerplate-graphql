@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './App.css'
-import { AppRoutes } from './pages/AppRoute'
+import { AppRoutes } from './teamstarter/pages/AppRoute'
 
 function App() {
   return (

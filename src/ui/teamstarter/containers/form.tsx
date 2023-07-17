@@ -2,7 +2,7 @@ import React, { KeyboardEvent } from 'react'
 import { useMutation } from '@apollo/client'
 import { gql } from '@apollo/client'
 import { useDispatch } from 'react-redux'
-import { addTask } from '../../services/task/add-task'
+import { addTask } from '../../../services/task/add-task'
 
 export default function Form() {
   const dispatch = useDispatch()

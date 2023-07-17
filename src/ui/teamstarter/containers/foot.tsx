@@ -2,11 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import { useDispatch } from 'react-redux'
-import { changeStatus } from '../../services/task/change-status'
+import { changeStatus } from '../../../services/task/change-status'
 import {
   currentTodosCount,
   currentTodosStatus
-} from '../../store/task/task.selectors'
+} from '../../../store/task/task.selectors'
 
 export default function Foot() {
   const todosCount = useSelector(currentTodosCount(true))

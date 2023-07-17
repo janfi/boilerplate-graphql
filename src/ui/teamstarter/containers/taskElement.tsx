@@ -2,14 +2,14 @@ import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useDebouncedCallback } from 'use-debounce'
 
-import { Task } from '../../models/task.model'
+import { Task } from '../../../models/task.model'
 import {
   TOMOROW_DATE,
   getStringDate
-} from '../../shared/tools/date/common-dates'
+} from '../../../shared/tools/date/common-dates'
 import { useDispatch } from 'react-redux'
-import { updateTask } from '../../services/task/update-task'
-import { deleteTask } from '../../services/task/delete-task'
+import { updateTask } from '../../../services/task/update-task'
+import { deleteTask } from '../../../services/task/delete-task'
 
 export default function TaskElement({ task }: { task: Task }) {
   const [reminder, setRemind] = useState(false)

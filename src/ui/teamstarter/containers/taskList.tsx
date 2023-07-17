@@ -2,15 +2,15 @@ import React, { useEffect } from 'react'
 import { useQuery, useSubscription } from '@apollo/client'
 
 import TaskElement from './taskElement'
-import { Task } from '../../models/task.model'
+import { Task } from '../../../models/task.model'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getTasks } from '../../services/task/get-tasks'
+import { getTasks } from '../../../services/task/get-tasks'
 import {
   currentListTodos,
   initTodos,
   loadingTodos
-} from '../../store/task/task.selectors'
+} from '../../../store/task/task.selectors'
 
 export function TaskList() {
   const todos = useSelector(currentListTodos)
