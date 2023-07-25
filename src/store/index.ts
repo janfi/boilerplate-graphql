@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
-import todos from './task/task.reducer'
+import todos from './reducers/task/task.reducer'
 import thunk from 'redux-thunk'
-import { todosMiddleware } from './task/task.middleware'
+import { todosMiddleware } from './middlewares/task/task.middleware'
 
 const rootReducer = combineReducers({ todos })
 
